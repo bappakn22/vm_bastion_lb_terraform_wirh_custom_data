@@ -1,6 +1,9 @@
 trigger: none
 
 pool:  empire_agent_pool
+
+variables:
+  WORK_DIR: '$(System.DefaultWorkingDirectory)/environment/dev'
   
 
 stages:
@@ -9,13 +12,21 @@ stages:
       - job: terraforminit
         steps:
         - task: TerraformTask@5
+          displayName: terraform init
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/environment/dev'
+            workingDirectory: $(WORK_DIR)
             backendServiceArm: 'empire_service_connection'
             backendAzureRmOverrideSubscriptionID: '70d13209-b5da-483b-9f07-a91b9e1a684b'
             backendAzureRmResourceGroupName: 'bappa-state-rg'
             backendAzureRmStorageAccountName: 'mstatefiles'
             backendAzureRmContainerName: 'statefiles'
             backendAzureRmKey: 'project.tftate'
+
+        - task: TerraformTask@5
+          displayName: terraform validate
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: $(WORK_DIR)
