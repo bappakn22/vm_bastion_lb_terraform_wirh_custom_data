@@ -80,3 +80,16 @@ stages:
             workingDirectory: $(WORK_DIR)
             commandOptions: '-auto-approve'
             environmentServiceNameAzureRM: $(CONN_SRV)
+
+  - stage: terraformdestroy
+    jobs:
+      - job: destroy
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'destroy'
+            workingDirectory: $(WORK_DIR)
+            commandOptions: '-auto-approve'
+            environmentServiceNameAzureRM:  $(CONN_SRV)
+            
