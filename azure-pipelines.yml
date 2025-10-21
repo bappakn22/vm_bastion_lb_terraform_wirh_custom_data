@@ -86,6 +86,19 @@ stages:
       - job: destroy
         steps:
         - task: TerraformTask@5
+          displayName: terraform init
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: $(WORK_DIR)
+            backendServiceArm: $(CONN_SRV)
+            backendAzureRmOverrideSubscriptionID: '70d13209-b5da-483b-9f07-a91b9e1a684b'
+            backendAzureRmResourceGroupName: 'bappa-state-rg'
+            backendAzureRmStorageAccountName: 'mstatefiles'
+            backendAzureRmContainerName: 'statefiles'
+            backendAzureRmKey: 'project.tfstate'
+        - task: TerraformTask@5
+          displayName: destroy
           inputs:
             provider: 'azurerm'
             command: 'destroy'
